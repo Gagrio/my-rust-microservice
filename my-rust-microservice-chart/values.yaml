@@ -1,0 +1,8 @@
+# values.yaml
+replicaCount: 1
+image:
+  repository: your-docker-registry/your-rust-image
+  tag: latest
+service:
+  name: my-rust-microservice
+  port: 8080
