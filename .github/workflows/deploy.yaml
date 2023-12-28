@@ -1,0 +1,30 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.4.3
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker to use Google Container Registry
+        run: |
+          gcloud auth configure-docker gcr.io
+
+      - name: Deploy to GKE
+        run: |
+          kubectl config use-context ${{ secrets.KUBE_CONTEXT }}
+          helm upgrade --install my-rust-microservice ./path/to/my-rust-microservice-chart-0.1.0.tgz --namespace default
