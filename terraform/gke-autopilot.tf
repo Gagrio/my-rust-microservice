@@ -1,5 +1,9 @@
 # main.tf
 
+###################
+# providers setup #
+###################
+
 provider "google" {
   credentials = file("path/to/your/credentials.json")
   project     = "your-gcp-project-id"
@@ -15,6 +19,10 @@ provider "kubernetes" {
   version    = ">= 2.7.0"
   kubeconfig = module.gke_autopilot.kubeconfig
 }
+
+###############
+# infra setup #
+###############
 
 module "project" {
   source          = "terraform-google-modules/project-factory/google"
@@ -61,6 +69,10 @@ module "container_registry" {
   repository_name      = "myapp-container-repo"
 }
 
+#####################
+# helm charts setup #
+#####################
+
 resource "helm_release" "myapp" {
   name      = "myapp"
   namespace = "default"
@@ -88,6 +100,10 @@ resource "helm_release" "istio-gateway" {
   chart     = "istio-ingressgateway"
   values    = [file("./helm-values/istio-gateway.yaml")]  # Path to Istio Gateway Helm chart values file
 }
+
+###########
+# outputs #
+###########
 
 output "gke_cluster_name" {
   value = module.gke_autopilot.cluster_name
