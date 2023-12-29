@@ -5,7 +5,7 @@ FROM rust:latest as builder
 WORKDIR /usr/src/myapp
 
 # Copy the Rust project files
-COPY . .
+COPY myapp/src .
 
 # Build the Rust application
 RUN cargo build --release
