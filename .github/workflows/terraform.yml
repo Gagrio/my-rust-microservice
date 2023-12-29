@@ -49,3 +49,8 @@ jobs:
         env:
           TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
           TF_VAR_credentials: ${{ secrets.GCP_CREDENTIALS }}
+
+#
+#Ensure that you replace ${{ secrets.GCP_PROJECT_ID }} and ${{ secrets.GCP_CREDENTIALS }} with the appropriate secret names for your Google Cloud Project ID and service account credentials.
+#Ensure that you have the necessary secrets set up in your GitHub repository for authenticating with Google Cloud Platform.
+#
