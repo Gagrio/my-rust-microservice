@@ -63,7 +63,7 @@ resource "helm_release" "myapp" {
   name      = "myapp"
   namespace = "default"
   chart     = "./helm"
-  values    = ["./helm-values/myapp.yaml"]
+  values    = ["./helm/values.yaml"]
 }
 
 resource "helm_release" "istio-base" {
