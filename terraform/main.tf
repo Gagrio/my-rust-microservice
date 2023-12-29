@@ -80,6 +80,20 @@ resource "helm_release" "myapp" {
   values    = [file("./helm-values/myapp.yaml")]  # Path to your Helm chart values file
 }
 
+resource "helm_release" "grafana" {
+  name      = "grafana"
+  namespace = "monitoring"
+  chart     = "grafana/grafana"
+  values    = ["./helm-values/grafana.yaml"]  # Path to your Grafana Helm chart values file
+}
+
+resource "helm_release" "prometheus" {
+  name      = "prometheus"
+  namespace = "monitoring"
+  chart     = "prometheus-community/prometheus"
+  values    = ["./helm-values/prometheus.yaml"]  # Path to your Prometheus Helm chart values file
+}
+
 resource "helm_release" "istio-base" {
   name      = "istio-base"
   namespace = "istio-system"
