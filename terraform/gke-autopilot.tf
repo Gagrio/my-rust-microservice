@@ -7,12 +7,12 @@ provider "google" {
 }
 
 provider "helm" {
-  version    = "2.4.0"
+  version    >= "2.4.0"
   kubeconfig = module.gke_autopilot.kubeconfig
 }
 
 provider "kubernetes" {
-  version    = "2.6.1"
+  version    >= "2.6.1"
   kubeconfig = module.gke_autopilot.kubeconfig
 }
 
