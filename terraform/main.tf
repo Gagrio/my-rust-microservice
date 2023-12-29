@@ -1,29 +1,5 @@
 # main.tf
 
-###################
-# providers setup #
-###################
-
-provider "google" {
-  credentials = file("path/to/your/credentials.json")
-  project     = "your-gcp-project-id"
-  region      = "europe-west1"  # Change this to your desired region in Europe
-}
-
-provider "helm" {
-  version    = ">= 2.5.0"
-  kubeconfig = module.gke_autopilot.kubeconfig
-}
-
-provider "kubernetes" {
-  version    = ">= 2.7.0"
-  kubeconfig = module.gke_autopilot.kubeconfig
-}
-
-###############
-# infra setup #
-###############
-
 module "project" {
   source          = "terraform-google-modules/project-factory/google"
   project_id      = "your-gcp-project-id"
@@ -67,66 +43,4 @@ module "container_registry" {
   project_id           = module.project.project_id
   location             = "europe-west1"  # Change this to your desired region in Europe
   repository_name      = "myapp-container-repo"
-}
-
-#####################
-# helm charts setup #
-#####################
-
-resource "helm_release" "myapp" {
-  name      = "myapp"
-  namespace = "default"
-  chart     = "./helm"  # Path to your local Helm chart directory
-  values    = [file("./helm-values/myapp.yaml")]  # Path to your Helm chart values file
-}
-
-resource "helm_release" "grafana" {
-  name      = "grafana"
-  namespace = "monitoring"
-  chart     = "grafana/grafana"
-  values    = ["./helm-values/grafana.yaml"]  # Path to your Grafana Helm chart values file
-}
-
-resource "helm_release" "prometheus" {
-  name      = "prometheus"
-  namespace = "monitoring"
-  chart     = "prometheus-community/prometheus"
-  values    = ["./helm-values/prometheus.yaml"]  # Path to your Prometheus Helm chart values file
-}
-
-resource "helm_release" "istio-base" {
-  name      = "istio-base"
-  namespace = "istio-system"
-  chart     = "istio-base"
-  values    = [file("./helm-values/istio-base.yaml")]  # Path to Istio Base Helm chart values file
-}
-
-resource "helm_release" "istiod" {
-  name      = "istiod"
-  namespace = "istio-system"
-  chart     = "istiod"
-  values    = [file("./helm-values/istiod.yaml")]  # Path to Istiod Helm chart values file
-}
-
-resource "helm_release" "istio-gateway" {
-  name      = "istio-gateway"
-  namespace = "istio-system"
-  chart     = "istio-ingressgateway"
-  values    = [file("./helm-values/istio-gateway.yaml")]  # Path to Istio Gateway Helm chart values file
-}
-
-###########
-# outputs #
-###########
-
-output "gke_cluster_name" {
-  value = module.gke_autopilot.cluster_name
-}
-
-output "gke_cluster_endpoint" {
-  value = module.gke_autopilot.endpoint
-}
-
-output "gke_kubeconfig" {
-  value = module.gke_autopilot.kubeconfig
 }
